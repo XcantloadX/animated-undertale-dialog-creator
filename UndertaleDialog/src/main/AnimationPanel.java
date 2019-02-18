@@ -146,10 +146,6 @@ public class AnimationPanel extends JPanel
 				}
 				this.repaint();
 				
-				//Ëµ»°ÉùÒô
-				/*audio.play();
-				audio.resetPosition();*/
-				
 				//×Ö·û¼ì²â
 				currentChar++;
 					

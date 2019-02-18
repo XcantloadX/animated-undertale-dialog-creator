@@ -9,6 +9,7 @@ import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;
 
+import audio.AudioClip;
 import audio.AudioTrack;
 import utils.FFmpeg;
 import utils.NamedPipe;
@@ -23,12 +24,12 @@ public class Main
 		m.setVisible(true);
 		
 		System.out.println(System.getProperty("user.dir"));
-		//test();
+		test();
 	}
 	
 	private static void test()
 	{
-		AudioTrack a = new AudioTrack();
+		AudioTrack a = new AudioTrack(48000);
 		
 		try
 		{
@@ -55,17 +56,26 @@ public class Main
 			fis.close();
 			out.close();*/
 			
-			String[] arg = new String[]{
-			"-i", //输入
-			"",//输入管道
-			"-f",//设定格式
-			"image2",//图片到视频
-			"E:\\test_java.mp4"//输出位置
-			};
 			FFmpeg f = new FFmpeg();
 			//f.start(arg);
 			
 			byte[] buffer = f.getAudioDataFromFile("C:\\Users\\Admin\\Desktop\\a\\battle_starand_16.wav", 48000);
+			AudioClip clip = new AudioClip(buffer,48000);
+			AudioClip clip2 = new AudioClip(buffer, 48000);
+			short[] data = clip.getDatas();
+			
+			clip.setDatas(data);
+			clip.updateRawDatas();
+			clip.setPosition(0);
+			clip2.setPosition(10);
+			
+			System.out.println(clip2.getPosition());
+			
+			a.addAudioClip(clip);
+			a.addAudioClip(clip2);
+			
+			buffer = a.toRawData();
+			
 			System.out.println("Get data length=" + buffer.length);
 			FileOutputStream out = new FileOutputStream("E:\\test.pcm");
 			out.write(buffer);
