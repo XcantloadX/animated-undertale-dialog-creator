@@ -1,4 +1,4 @@
-package resource;
+package animation;
 
 public class BuiltInFaces
 {

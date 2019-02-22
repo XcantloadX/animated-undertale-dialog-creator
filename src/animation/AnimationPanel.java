@@ -1,4 +1,4 @@
-package main;
+package animation;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -13,8 +13,9 @@ import javax.imageio.ImageIO;
 import javax.naming.InitialContext;
 import javax.swing.JPanel;
 
-import resource.Face;
-import resource.Fonts;
+import com.sun.jna.platform.win32.Netapi32Util.User;
+
+import audio.Audio;
 
 public class AnimationPanel extends JPanel
 {
@@ -27,6 +28,7 @@ public class AnimationPanel extends JPanel
 	private Audio audio;
 	private Image image;
 	private Face face;
+	private AnimatedTextBox textBox;
 	
 	private boolean renderStarted = false;
 	private int currentChar = 0;
@@ -37,10 +39,10 @@ public class AnimationPanel extends JPanel
 	
 	public AnimationPanel()
 	{
-		//this.setSize(width, height);
 		this.setPreferredSize(new Dimension(width, height));
-		audio = new Audio("C:\\Users\\Admin\\Desktop\\a\\snd_talk_asriel.wav");
-		face = new Face("C:\\Users\\Admin\\Desktop\\sprites\\sans\\0.png");
+		audio = new Audio(System.getProperty("user.dir") + "\\res\\voices\\asriel.wav");
+		face = Face.getSansFace(0);
+		textBox = new AnimatedTextBox(texts,100, 50, 100);
 		face.width = 70;
 		face.height = 70;
 	}
@@ -68,7 +70,7 @@ public class AnimationPanel extends JPanel
 		drawBorder();
 		face.y = (height / 2) - (face.height / 2);//ÌùÍ¼¾ÓÖÐÏÔÊ¾
 		face.x = 30;
-		//face.draw(graphics);
+		face.draw(graphics);
 		
 		
 		//Ë«»º³å
@@ -80,20 +82,21 @@ public class AnimationPanel extends JPanel
 		{
 			e.printStackTrace();
 		}
-		graphics.drawString(texts.substring(0,currentChar), 100, 50);
+		
+		//»æÖÆÎÄ×Ö
+		textBox.draw(graphics);
 		
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		Graphics g1 = bi.createGraphics();
 		g1.drawImage(image, 0, 0, null);
 
-		try
+		/*try
 		{
 			ImageIO.write(bi, "png", new File("E:\\" +i+".png" ));
 		} catch (IOException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		i++;
 		g.drawImage(image, 0, 0, null);
 	}
@@ -146,9 +149,9 @@ public class AnimationPanel extends JPanel
 				}
 				this.repaint();
 				
-				//×Ö·û¼ì²â
 				currentChar++;
-					
+				textBox.nextChar();
+				
 				Thread.sleep(1000 / fps);
 			} 
 			catch (Exception e)

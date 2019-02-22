@@ -9,10 +9,14 @@ import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
+
+import animation.AnimationPanel;
 
 public class MainWindow extends JFrame
 {
 	public AnimationPanel animationPanel;
+	public JPanel editorPanel;
 	private int width = 600;
 	private int height = 500;
 	private int fps;
@@ -25,6 +29,7 @@ public class MainWindow extends JFrame
 		super();
 		this.setTitle(windowTitle);
 		this.setSize(width, height);
+		this.setResizable(false);
 		this.setLayout(new FlowLayout(FlowLayout.CENTER,10,10));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initComponents();
@@ -39,6 +44,10 @@ public class MainWindow extends JFrame
 		controlPanel = new JPanel();
 		controlPanel.setVisible(true);
 		this.add(controlPanel);
+		
+		editorPanel = new JPanel();
+		editorPanel.setVisible(true);
+		this.add(editorPanel);
 		
 		JButton play = new JButton("Play");
 		play.setVisible(true);
@@ -56,8 +65,9 @@ public class MainWindow extends JFrame
 		pause.setVisible(true);
 		controlPanel.add(pause);
 		
-		JEditorPane editorPane = new JEditorPane();
-		editorPane.setVisible(true);
-		controlPanel.add(editorPane);
+		JTextPane textPane = new JTextPane();
+		textPane.setPreferredSize(new Dimension(450, 100));
+		textPane.setVisible(true);
+		editorPanel.add(textPane);
 	}
 }

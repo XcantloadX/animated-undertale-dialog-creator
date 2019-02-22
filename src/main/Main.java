@@ -19,12 +19,12 @@ public class Main
 
 	public static void main(String[] args)
 	{
-		System.setProperty("user.dir", "C:\\Users\\Admin\\Desktop\\ut");
+		//System.setProperty("user.dir", "C:\\Users\\Admin\\Desktop\\ut");
 		MainWindow m = new MainWindow();
 		m.setVisible(true);
 		
 		System.out.println(System.getProperty("user.dir"));
-		test();
+		//test();
 	}
 	
 	private static void test()
