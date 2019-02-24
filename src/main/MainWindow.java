@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
@@ -64,6 +65,29 @@ public class MainWindow extends JFrame
 		JButton pause = new JButton("Pause");
 		pause.setVisible(true);
 		controlPanel.add(pause);
+		
+		JButton save = new JButton("Save as PNG");
+		save.setVisible(true);
+		save.addActionListener(new ActionListener()
+		{
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0)
+			{
+				try
+				{
+					animationPanel.saveAsImage("E:\\test.png");
+					System.out.println("Saved successfully at: " + "E:\\test.png");
+				} 
+				catch (IOException e)
+				{
+					System.out.println("Error while saving png: ");
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		controlPanel.add(save);
 		
 		JTextPane textPane = new JTextPane();
 		textPane.setPreferredSize(new Dimension(450, 100));

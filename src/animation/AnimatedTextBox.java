@@ -13,7 +13,8 @@ public class AnimatedTextBox
 	private Font font;
 	private int x;
 	private int y;
-	
+	private long startTime = 0;
+	private long endTime = 0;
 	
 	public AnimatedTextBox()
 	{
@@ -45,19 +46,52 @@ public class AnimatedTextBox
 		this.interval = interval;
 	}
 	
+	//下一个字符
 	public void nextChar()
 	{
-		interval++;
-		if(text.substring(currentCharacter, currentCharacter+1) == " ")
-			interval++;
+		if(isFinished())
+			return;
+		currentCharacter++;
+	}
+	
+	//设置到最后一个字符
+	public void lastChar()
+	{
+		currentCharacter = text.length();
+	}
+	
+	//设置到第一个字符
+	public void firstChar()
+	{
+		currentCharacter = 0;
 	}
 	
 	public void draw(Graphics g)
 	{
+		if(startTime == 0)
+			startTime = System.currentTimeMillis();
+		endTime = System.currentTimeMillis();
+		
+		//计算两次绘制的间隔时间是否大于interval
+		if(endTime - startTime >= interval)
+		{
+			nextChar();
+			startTime = System.currentTimeMillis();
+		}
+		
 		String temp = text.substring(0, currentCharacter);
-		g.setColor(Color.BLACK);
+		System.out.println(temp);
+		g.setColor(Color.WHITE);
 		g.setFont(font);
-		g.drawString(text, x, y);
+		g.drawString(temp, x, y);
+
+	}
+	
+	public boolean isFinished()
+	{
+		if(currentCharacter >= text.length())
+			return true;
+		return false;
 	}
 
 	public String getText()
@@ -96,6 +130,26 @@ public class AnimatedTextBox
 	public void setInterval(int interval)
 	{
 		this.interval = interval;
+	}
+
+	public int getX()
+	{
+		return x;
+	}
+
+	public void setX(int x)
+	{
+		this.x = x;
+	}
+
+	public int getY()
+	{
+		return y;
+	}
+
+	public void setY(int y)
+	{
+		this.y = y;
 	}
 	
 }

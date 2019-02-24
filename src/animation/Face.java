@@ -55,14 +55,13 @@ public class Face
 	{
 		ArrayList<Face> faces = new ArrayList<Face>();
 		int i = 0;
-		File temp = null;
-		String path = "";
+		Face temp = null;
+
 		while(true)
 		{
-			path = Resource.getResFolder() + "\\sprites\\sans\\" + i + ".png";
-			temp = new File(path);
-			if(temp.exists())
-				faces.add(new Face(path));
+			temp = getSansFace(i);
+			if(temp != null)
+				faces.add(temp);
 			else 
 				break;
 		}

@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,12 +17,13 @@ import javax.swing.JPanel;
 import com.sun.jna.platform.win32.Netapi32Util.User;
 
 import audio.Audio;
+import utils.Resource;
 
 public class AnimationPanel extends JPanel
 {
 	private int width = 500;
 	private int height = 150;
-	public int fps = 5;
+	public int fps = 15;
 	private Color backgroundColor = Color.BLACK;
 	public String texts ="This is a test text.";
 	private Graphics graphics;
@@ -40,7 +42,7 @@ public class AnimationPanel extends JPanel
 	public AnimationPanel()
 	{
 		this.setPreferredSize(new Dimension(width, height));
-		audio = new Audio(System.getProperty("user.dir") + "\\res\\voices\\asriel.wav");
+		audio = new Audio(Resource.getResFolder() + "\\voices\\asriel.wav");
 		face = Face.getSansFace(0);
 		textBox = new AnimatedTextBox(texts,100, 50, 100);
 		face.width = 70;
@@ -84,6 +86,8 @@ public class AnimationPanel extends JPanel
 		}
 		
 		//»æÖÆÎÄ×Ö
+		textBox.setX(face.x + face.width + 20);
+		textBox.setY(50);
 		textBox.draw(graphics);
 		
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -123,7 +127,6 @@ public class AnimationPanel extends JPanel
 	public void start()
 	{
 		renderStarted = true;
-		currentChar = 0;
 		Thread t = new Thread(new Runnable()
 		{
 			
@@ -136,21 +139,36 @@ public class AnimationPanel extends JPanel
 		t.start();
 	}
 	
+	public void setText(String text)
+	{
+		textBox.setText(text);
+	}
+	
+	public void saveAsImage(String path) throws IOException
+	{
+		textBox.lastChar();
+		
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		Graphics g = bi.createGraphics();
+		paint(g);
+		
+		ImageIO.write(bi, "png", new File(path));
+		
+		textBox.firstChar();
+	}
+	
 	private void renderThread()
 	{
 		while (true)
 		{
 			try
 			{
-				if(currentChar >= texts.length())
+				if(textBox.isFinished())
 				{
 					renderStarted = false;
 					break;
 				}
 				this.repaint();
-				
-				currentChar++;
-				textBox.nextChar();
 				
 				Thread.sleep(1000 / fps);
 			} 
@@ -160,4 +178,5 @@ public class AnimationPanel extends JPanel
 			}
 		}
 	}
+
 }
