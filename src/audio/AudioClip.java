@@ -13,8 +13,8 @@ public class AudioClip
 	private int position = -1;
 	
 	/**
-	 * ´ÓÒôÆµÊı¾İ´´½¨AudioClip
-	 * @param buffer 16Î»¡¢Ë«ÉùµÀÔ­Ê¼ÒôÆµÊı¾İ
+	 * ä»éŸ³é¢‘æ•°æ®åˆ›å»ºAudioClip
+	 * @param buffer 16ä½ã€åŒå£°é“åŸå§‹éŸ³é¢‘æ•°æ®
 	 */
 	public AudioClip(byte[] buffer, int sampleRate)
 	{
@@ -59,12 +59,18 @@ public class AudioClip
 	{
 		return position;
 	}
-
-	public void setPosition(int positionInSecond)
+	
+	public float getPositionInSec()
 	{
-		//Ñù±¾Êı £½ Ãë * ²ÉÑùÂÊ * Í¨µÀÊıÁ¿
-		int pos = positionInSecond * sampleRate * 2;
+		return position / sampleRate / 2;
+	}
+
+	public void setPosition(float positionInSecond)
+	{
+		//æ ·æœ¬æ•° ï¼ ç§’ * é‡‡æ ·ç‡ * é€šé“æ•°é‡
+		int pos = (int) (positionInSecond * sampleRate * 2);
 		this.position = pos;
 	}
+	
 	
 }

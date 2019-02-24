@@ -1,5 +1,6 @@
 # Animated Undertale Dialog Creator
 此项目还未完成  
+
 目前的效果：  
 ![example](https://raw.githubusercontent.com/XcantloadX/animated-undertale-dialog-creator/master/example.png)
 

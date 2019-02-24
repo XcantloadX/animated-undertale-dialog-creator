@@ -13,6 +13,7 @@ import audio.AudioClip;
 import audio.AudioTrack;
 import utils.FFmpeg;
 import utils.NamedPipe;
+import utils.Resource;
 
 public class Main
 {
@@ -24,10 +25,10 @@ public class Main
 		m.setVisible(true);
 		
 		System.out.println(System.getProperty("user.dir"));
-		//test();
+		//audioTest();
 	}
 	
-	private static void test()
+	private static void audioTest()
 	{
 		AudioTrack a = new AudioTrack(48000);
 		
@@ -59,7 +60,8 @@ public class Main
 			FFmpeg f = new FFmpeg();
 			//f.start(arg);
 			
-			byte[] buffer = f.getAudioDataFromFile("C:\\Users\\Admin\\Desktop\\a\\battle_starand_16.wav", 48000);
+			//C:\\Users\\Administrator\\Desktop\\a\\battle_starand_16.wav
+			byte[] buffer = f.getAudioDataFromFile(Resource.getResFolder() + "\\voices\\asriel.wav", 48000);
 			AudioClip clip = new AudioClip(buffer,48000);
 			AudioClip clip2 = new AudioClip(buffer, 48000);
 			short[] data = clip.getDatas();
@@ -67,7 +69,7 @@ public class Main
 			clip.setDatas(data);
 			clip.updateRawDatas();
 			clip.setPosition(0);
-			clip2.setPosition(10);
+			clip2.setPosition((float)(clip.getPositionInSec() + 0.1));
 			
 			System.out.println(clip2.getPosition());
 			
@@ -85,10 +87,6 @@ public class Main
 		{
 			e.printStackTrace();
 		}
-		
-		//a.play(System.getProperty("user.dir") + "\\voices\\asriel.wav");
-		//a.play("C:\\Users\\Admin\\Desktop\\battle_starand_16.wav");
-		//a.play("C:\\Users\\Admin\\Desktop\\2.wav");
 	}
 
 }
