@@ -44,7 +44,7 @@ public class AnimationPanel extends JPanel
 		this.setPreferredSize(new Dimension(width, height));
 		audio = new Audio(Resource.getResFolder() + "\\voices\\asriel.wav");
 		face = Face.getSansFace(0);
-		textBox = new AnimatedTextBox(texts,100, 50, 100);
+		textBox = new AnimatedTextBox(texts,100, 50, 40);
 		face.width = 70;
 		face.height = 70;
 	}
@@ -66,16 +66,16 @@ public class AnimationPanel extends JPanel
 		if(image == null && graphics == null)
 			init();
 		
-		//Çå³ı±³¾°
+		//æ¸…é™¤èƒŒæ™¯
 		clear(g, image);
 		
 		drawBorder();
-		face.y = (height / 2) - (face.height / 2);//ÌùÍ¼¾ÓÖĞÏÔÊ¾
+		face.y = (height / 2) - (face.height / 2);//è´´å›¾å±…ä¸­æ˜¾ç¤º
 		face.x = 30;
 		face.draw(graphics);
 		
 		
-		//Ë«»º³å
+		//åŒç¼“å†²
 		graphics.setColor(Color.WHITE);
 		try
 		{
@@ -85,7 +85,7 @@ public class AnimationPanel extends JPanel
 			e.printStackTrace();
 		}
 		
-		//»æÖÆÎÄ×Ö
+		//ç»˜åˆ¶æ–‡å­—
 		textBox.setX(face.x + face.width + 20);
 		textBox.setY(50);
 		textBox.draw(graphics);
@@ -105,7 +105,7 @@ public class AnimationPanel extends JPanel
 		g.drawImage(image, 0, 0, null);
 	}
 	
-	//°×É«±ß¿ò
+	//ç™½è‰²è¾¹æ¡†
 	private void drawBorder()
 	{
 		graphics.setColor(Color.WHITE);
@@ -154,6 +154,11 @@ public class AnimationPanel extends JPanel
 		
 		ImageIO.write(bi, "png", new File(path));
 		
+		textBox.firstChar();
+	}
+	
+	public void reset()
+	{
 		textBox.firstChar();
 	}
 	

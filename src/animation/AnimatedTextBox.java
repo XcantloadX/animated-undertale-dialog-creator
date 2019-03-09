@@ -8,7 +8,7 @@ public class AnimatedTextBox
 {
 	private String text;
 	private int currentCharacter = 0;
-	private int interval;//ºÁÃë
+	private int interval;//æ¯«ç§’
 	private boolean skipSpace = false;
 	private Font font;
 	private int x;
@@ -46,7 +46,7 @@ public class AnimatedTextBox
 		this.interval = interval;
 	}
 	
-	//ÏÂÒ»¸ö×Ö·û
+	//ä¸‹ä¸€ä¸ªå­—ç¬¦
 	public void nextChar()
 	{
 		if(isFinished())
@@ -54,13 +54,13 @@ public class AnimatedTextBox
 		currentCharacter++;
 	}
 	
-	//ÉèÖÃµ½×îºóÒ»¸ö×Ö·û
+	//è®¾ç½®åˆ°æœ€åŽä¸€ä¸ªå­—ç¬¦
 	public void lastChar()
 	{
 		currentCharacter = text.length();
 	}
 	
-	//ÉèÖÃµ½µÚÒ»¸ö×Ö·û
+	//è®¾ç½®åˆ°ç¬¬ä¸€ä¸ªå­—ç¬¦
 	public void firstChar()
 	{
 		currentCharacter = 0;
@@ -72,7 +72,7 @@ public class AnimatedTextBox
 			startTime = System.currentTimeMillis();
 		endTime = System.currentTimeMillis();
 		
-		//¼ÆËãÁ½´Î»æÖÆµÄ¼ä¸ôÊ±¼äÊÇ·ñ´óÓÚinterval
+		//è®¡ç®—ä¸¤æ¬¡ç»˜åˆ¶çš„é—´éš”æ—¶é—´æ˜¯å¦å¤§äºŽinterval
 		if(endTime - startTime >= interval)
 		{
 			nextChar();

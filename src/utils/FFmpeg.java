@@ -23,8 +23,8 @@ public class FFmpeg
 	}
 	
 	/**
-	 * ÒÔÖ¸¶¨²ÎÊıÆô¶¯FFmpeg
-	 * @param args Æô¶¯²ÎÊı
+	 * ä»¥æŒ‡å®šå‚æ•°å¯åŠ¨FFmpeg
+	 * @param args å¯åŠ¨å‚æ•°
 	 */
 	public void start(String[] args)
 	{
@@ -34,7 +34,7 @@ public class FFmpeg
 		
 		list.add(exePath);
 		list.addAll(Arrays.asList(args));
-		list.add("-y");//²»¾­¹ıÑ¯ÎÊÖ±½Ó¸²¸ÇÎÄ¼ş
+		list.add("-y");//ä¸ç»è¿‡è¯¢é—®ç›´æ¥è¦†ç›–æ–‡ä»¶
 		
 		try
 		{
@@ -54,7 +54,7 @@ public class FFmpeg
 				System.out.println(br.readLine());
 			}
 			
-			//Êä³öÌáÊ¾ÏûÏ¢»»ĞĞ
+			//è¾“å‡ºæç¤ºæ¶ˆæ¯æ¢è¡Œ
 			System.out.println();
 			
 			is = process.getInputStream();
@@ -107,7 +107,7 @@ public class FFmpeg
 		
 	}
 	
-	//·µ»Ø16Î»µÄÔ­Ê¼ÒôÆµÊı¾İ
+	//è¿”å›16ä½çš„åŸå§‹éŸ³é¢‘æ•°æ®
 	public byte[] getAudioDataFromFile(String filePath, int outputSampleRate)
 	{
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -117,22 +117,22 @@ public class FFmpeg
 		{
 			NamedPipe pipe = new NamedPipe("audio_output");
 			
-			//Æô¶¯²ÎÊı
+			//å¯åŠ¨å‚æ•°
 			ArrayList<String> args = new ArrayList<String>();
 			args.add("-i");
 			args.add(filePath);
-			args.add("-f");//Êä³ö¸ñÊ½
-			args.add("s16le");//Êä³ö¸ñÊ½(pcm 16 bit Ğ¡¶ËÄ£Ê½)
-			args.add("-ar");//ÒôÆµ²ÉÑùÂÊ
-			args.add(String.valueOf(outputSampleRate));//ÒôÆµ²ÉÑùÂÊ
-			args.add("-c:a");//±àÂëÆ÷¸ñÊ½
+			args.add("-f");//è¾“å‡ºæ ¼å¼
+			args.add("s16le");//è¾“å‡ºæ ¼å¼(pcm 16 bit å°ç«¯æ¨¡å¼)
+			args.add("-ar");//éŸ³é¢‘é‡‡æ ·ç‡
+			args.add(String.valueOf(outputSampleRate));//éŸ³é¢‘é‡‡æ ·ç‡
+			args.add("-c:a");//ç¼–ç å™¨æ ¼å¼
 			args.add("pcm_s16le");
 			args.add(pipe.getFullPath());
 			
-			//Æô¶¯½ø³Ì
+			//å¯åŠ¨è¿›ç¨‹
 			startAsync(args);
 			
-			//´Ó¹ÜµÀÀï¶ÁÈ¡Êı¾İ
+			//ä»ç®¡é“é‡Œè¯»å–æ•°æ®
 			pipe.waitForConnect();
 			byte[] temp = new byte[1024];
 			while (pipe.read(temp, temp.length))
@@ -147,7 +147,7 @@ public class FFmpeg
 				}
 			}
 			
-			//¹Ø±Õ¹ÜµÀ
+			//å…³é—­ç®¡é“
 			pipe.close();
 		} 
 		catch (Exception e)

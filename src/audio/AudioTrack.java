@@ -42,11 +42,11 @@ public class AudioTrack
 		{
 			inputStream = AudioSystem.getAudioInputStream(new File(file));
 			
-			//»ñÈ¡ÒôÆµ¸ñÊ½
+			//è·å–éŸ³é¢‘æ ¼å¼
 			audioFormat = inputStream.getFormat();
 			System.out.println("Audio Format: " + audioFormat.toString());
 			
-			//ĞÅÏ¢
+			//ä¿¡æ¯
 			DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFormat,AudioSystem.NOT_SPECIFIED);
 			
 			sourceDataLine = (SourceDataLine)AudioSystem.getLine(info);//
@@ -86,8 +86,8 @@ public class AudioTrack
 	{
 		ByteArrayOutputStream output = new ByteArrayOutputStream();
 
-		//¼ÆËãÊı¾İ´óĞ¡
-		//»ñÈ¡×î´óÒôÆµ³¤¶È
+		//è®¡ç®—æ•°æ®å¤§å°
+		//è·å–æœ€å¤§éŸ³é¢‘é•¿åº¦
 		int max = 0;
 		for (int i = 0; i < audioClips.size(); i++)
 		{
@@ -96,10 +96,10 @@ public class AudioTrack
 				max = num;
 		}
 		
-		//Ã¿ÉùµÀÑù±¾Êı = ÒôÆµÊı¾İ´óĞ¡ / Ã¿Ñù±¾´óĞ¡(¼´BitsPerSample/8) / Í¨µÀÊı
-		//ÒôÆµÊı¾İ´óĞ¡ =  Ñù±¾Êı * Ã¿Ñù±¾´óĞ¡(¼´BitsPerSample/8)
-		//Êı¾İÁ¿=(²ÉÑùÆµÂÊ¡Á²ÉÑùÎ»Êı¡ÁÉùµÀÊı¡ÁÊ±¼ä)/8
-		//BitsPerSample = 16Î»
+		//æ¯å£°é“æ ·æœ¬æ•° = éŸ³é¢‘æ•°æ®å¤§å° / æ¯æ ·æœ¬å¤§å°(å³BitsPerSample/8) / é€šé“æ•°
+		//éŸ³é¢‘æ•°æ®å¤§å° =  æ ·æœ¬æ•° * æ¯æ ·æœ¬å¤§å°(å³BitsPerSample/8)
+		//æ•°æ®é‡=(é‡‡æ ·é¢‘ç‡Ã—é‡‡æ ·ä½æ•°Ã—å£°é“æ•°Ã—æ—¶é—´)/8
+		//BitsPerSample = 16ä½
 		short[] temp = new short[max];
 		
 		int current = 0;

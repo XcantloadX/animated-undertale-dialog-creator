@@ -15,20 +15,20 @@ public class NamedPipe
 		System.out.println("[Pipe]New pipe: " + getFullPath());
 		hwnd = Kernel32.INSTANCE.CreateNamedPipe(
 				getFullPath(),
-				0x00000003,//dwOpenMode (0x00000003 Ë«Ïò¹ÜµÀ)
+				0x00000003,//dwOpenMode (0x00000003 åŒå‘ç®¡é“)
 				0x00000000,//dwPipeMode (0x00000000 PIPE_TYPE_BYTE)
-				1,//nMaxInstances (¿ÉÒÔÎª´Ë¹ÜµÀ´´½¨µÄ×î´óÊµÀıÊı 1-255)
-				512,//nOutBufferSize (Êä³ö»º³åÇø´óĞ¡)
-				512,//nInBufferSize (ÊäÈë»º³åÇø´óĞ¡)
-				0,//nDefaultTimeOut (³¬Ê±Ê±¼ä£¬0ÎªÄ¬ÈÏÖµ50ms)
+				1,//nMaxInstances (å¯ä»¥ä¸ºæ­¤ç®¡é“åˆ›å»ºçš„æœ€å¤§å®ä¾‹æ•° 1-255)
+				512,//nOutBufferSize (è¾“å‡ºç¼“å†²åŒºå¤§å°)
+				512,//nInBufferSize (è¾“å…¥ç¼“å†²åŒºå¤§å°)
+				0,//nDefaultTimeOut (è¶…æ—¶æ—¶é—´ï¼Œ0ä¸ºé»˜è®¤å€¼50ms)
 				null//lpSecurityAttributes (null)
 				);
 		if(hwnd == Kernel32.INVALID_HANDLE_VALUE)
-			throw new Exception("Can't create pipe: invalid handle value");//¼ì²â¾ä±úÓĞĞ§ĞÔ
+			throw new Exception("Can't create pipe: invalid handle value");//æ£€æµ‹å¥æŸ„æœ‰æ•ˆæ€§
 	}
 	
 	/**
-	 * µÈ´ı¹ÜµÀ±»Á¬½Ó£¬Ã»ÓĞ±»Á¬½ÓÖ®Ç°²»»á·µ»Ø
+	 * ç­‰å¾…ç®¡é“è¢«è¿æ¥ï¼Œæ²¡æœ‰è¢«è¿æ¥ä¹‹å‰ä¸ä¼šè¿”å›
 	 */
 	public void waitForConnect()
 	{
@@ -39,15 +39,15 @@ public class NamedPipe
 	}
 	
 	/**
-	 * Ïò¹ÜµÀÀïĞ´ÈëÊı¾İ
-	 * @param buffer ÒªĞ´ÈëµÄÊı¾İ
-	 * @return ÊÇ·ñĞ´Èë³É¹¦
+	 * å‘ç®¡é“é‡Œå†™å…¥æ•°æ®
+	 * @param buffer è¦å†™å…¥çš„æ•°æ®
+	 * @return æ˜¯å¦å†™å…¥æˆåŠŸ
 	 */
 	public boolean write(byte[] buffer)
 	{
 		return Kernel32.INSTANCE.WriteFile(
-				hwnd,//hFile (¾ä±ú)
-				buffer,//lpBuffer (ÒªĞ´ÈëµÄÄÚÈİ)
+				hwnd,//hFile (å¥æŸ„)
+				buffer,//lpBuffer (è¦å†™å…¥çš„å†…å®¹)
 				buffer.length,//nNumberOfBytesToRead
 				new IntByReference(),//lpNumberOfBytesRead
 				null//lpOverlapped
@@ -55,10 +55,10 @@ public class NamedPipe
 	}
 	
 	/**
-	 * ´Ó¹ÜµÀÀï¶ÁÈëÊı¾İ
-	 * @param buffer ¶ÁÈëµÄÊı¾İ
-	 * @param length Òª¶ÁÈëµÄ³¤¶È
-	 * @return ÊÇ·ñ¶ÁÈë³É¹¦
+	 * ä»ç®¡é“é‡Œè¯»å…¥æ•°æ®
+	 * @param buffer è¯»å…¥çš„æ•°æ®
+	 * @param length è¦è¯»å…¥çš„é•¿åº¦
+	 * @return æ˜¯å¦è¯»å…¥æˆåŠŸ
 	 */
 	public boolean read(byte[] buffer, int length)
 	{
@@ -66,16 +66,16 @@ public class NamedPipe
 	}
 	
 	/**
-	 * ¹Ø±Õ¹ÜµÀ
+	 * å…³é—­ç®¡é“
 	 */
 	public void close()
 	{
-		Kernel32.INSTANCE.CloseHandle(hwnd);//¹Ø±Õ¹ÜµÀ
+		Kernel32.INSTANCE.CloseHandle(hwnd);//å…³é—­ç®¡é“
 	}
 	
 	/**
-	 * »ñÈ¡¹ÜµÀµÄÃû³Æ
-	 * @return ¹ÜµÀÃû³Æ
+	 * è·å–ç®¡é“çš„åç§°
+	 * @return ç®¡é“åç§°
 	 */
 	public String getName()
 	{
@@ -83,8 +83,8 @@ public class NamedPipe
 	}
 	
 	/**
-	 * »ñÈ¡¹ÜµÀµÄÊµ¼ÊÂ·¾¶£¬ÀıÈç¡°\\.\pipe\name¡±
-	 * @return ¹ÜµÀµÄÊµ¼ÊÂ·¾¶
+	 * è·å–ç®¡é“çš„å®é™…è·¯å¾„ï¼Œä¾‹å¦‚â€œ\\.\pipe\nameâ€
+	 * @return ç®¡é“çš„å®é™…è·¯å¾„
 	 */
 	public String getFullPath()
 	{

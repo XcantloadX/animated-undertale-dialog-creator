@@ -37,7 +37,7 @@ public class Main
 			
 			/*NamedPipe pipe = new NamedPipe("test");
 			pipe.waitForConnect();
-			System.out.println("Á¬½Ó³É¹¦£¡");
+			System.out.println("è¿æ¥æˆåŠŸï¼");
 			
 			FileInputStream fis = new FileInputStream("C:\\Users\\Admin\\Desktop\\battle_starand_16.wav");
 			FileOutputStream out = new FileOutputStream("E:\\a.wav");
