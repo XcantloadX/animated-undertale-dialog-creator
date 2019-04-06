@@ -3,56 +3,42 @@ package animation;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
-public class AnimatedTextBox
+public class AnimatedTextBox implements Renderable
 {
 	private String text;
 	private int currentCharacter = 0;
 	private int interval;//毫秒
+	private int intervalFPS = 1;
 	private boolean skipSpace = false;
 	private Font font;
 	private int x;
 	private int y;
-	private long startTime = 0;
-	private long endTime = 0;
+	
 	
 	public AnimatedTextBox()
 	{
 		interval = 100;
 	}
 	
-	public AnimatedTextBox(String text)
+	public AnimatedTextBox(String text, Font font)
 	{
 		this();
 		this.text = text;
+		this.font = font;
 	}
 	
-	public AnimatedTextBox(String text, int interval)
+	public AnimatedTextBox(String text, int x, int y, int interval, Font font)
 	{
-		this(text);
-		this.interval = interval;
-	}
-	
-	public AnimatedTextBox(String text, int x, int y)
-	{
-		this(text);
+		this(text, font);
 		this.x = x;
 		this.y = y;
-	}
-	
-	public AnimatedTextBox(String text, int x, int y, int interval)
-	{
-		this(text, x, y);
+		
 		this.interval = interval;
 	}
 	
-	//下一个字符
-	public void nextChar()
-	{
-		if(isFinished())
-			return;
-		currentCharacter++;
-	}
+
 	
 	//设置到最后一个字符
 	public void lastChar()
@@ -65,28 +51,7 @@ public class AnimatedTextBox
 	{
 		currentCharacter = 0;
 	}
-	
-	public void draw(Graphics g)
-	{
-		if(startTime == 0)
-			startTime = System.currentTimeMillis();
-		endTime = System.currentTimeMillis();
-		
-		//计算两次绘制的间隔时间是否大于interval
-		if(endTime - startTime >= interval)
-		{
-			nextChar();
-			startTime = System.currentTimeMillis();
-		}
-		
-		String temp = text.substring(0, currentCharacter);
-		System.out.println(temp);
-		g.setColor(Color.WHITE);
-		g.setFont(font);
-		g.drawString(temp, x, y);
 
-	}
-	
 	public boolean isFinished()
 	{
 		if(currentCharacter >= text.length())
@@ -150,6 +115,105 @@ public class AnimatedTextBox
 	public void setY(int y)
 	{
 		this.y = y;
+	}
+	
+	/**
+	 * 获取当前文本的长度
+	 * @return 文本的长度，如果文本为空，则返回 -1
+	 */
+	public int length()
+	{
+		if(text == null)
+			return -1;
+		return text.length();
+	}
+	
+	/**
+	 * 刷新当前字体，在开始渲染前调用
+	 */
+	public void refreshFont(Graphics g)
+	{
+		g.setFont(font);
+	}
+	
+	@Override
+	public void renderImage(int frame, int fps, Graphics g)
+	{
+		int time = frame / fps;
+		int i = (int)time / interval;
+		int backup = currentCharacter;
+		
+		currentCharacter = i;
+		
+		//计算当前字符
+		int chars = (int)(frame / intervalFPS);
+		if(chars > length())
+			chars = length();
+		
+		String temp = text.substring(0, chars);
+		//System.out.println(temp);
+		g.setColor(Color.WHITE);
+		//g.setFont(font);
+		g.drawString(temp, x, y);
+		
+		currentCharacter = backup;
+	}
+
+	@Override
+	public void previewImage(Graphics g)
+	{
+		renderImage(lastFrame(), AnimationCanvas.getFPS(), g);
+	}
+
+	@Override
+	public int frameLength()
+	{
+		return length() * intervalFPS;
+	}
+
+	@Override
+	public void reset()
+	{
+		
+	}
+
+	@Override
+	public int lastFrame()
+	{
+		return frameLength();
+	}
+
+	@Override
+	public int getWidth()
+	{
+		return -1;
+	}
+
+	@Override
+	public int getHeight()
+	{
+		return -1;
+	}
+
+	@Override
+	public void initRender(Graphics g)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void previewImage(int frame, Graphics g)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refreshPreview()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

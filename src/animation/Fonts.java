@@ -11,9 +11,17 @@ import utils.Resource;
 
 public class Fonts
 {
-	public static Font getSansFont(int fontSize) throws Exception
+	public static Font getSansFont(int fontSize)
 	{
-		return getFont(Resource.getResFolder() + "\\fonts\\sans.ttf", Font.PLAIN, fontSize);
+		Font font = null;
+		try
+		{
+			font = getFont(Resource.getResFolder() + "\\fonts\\sans.ttf", Font.PLAIN, fontSize);
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		return font;
 	}
 	
 	public static Font getPapyrusFontChinese(int fontSize) throws Exception
@@ -32,5 +40,11 @@ public class Fonts
 		Font f = Font.createFont(Font.TRUETYPE_FONT, is);
 		f = f.deriveFont(size);
 		return f;
+	}
+	
+	public static Font getDefaultFont()
+	{
+		Font font = new Font("微软雅黑", Font.PLAIN, 20);
+		return font;
 	}
 }

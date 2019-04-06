@@ -10,7 +10,7 @@ import javax.imageio.ImageIO;
 
 import utils.Resource;
 
-public class Face
+public class Face implements Renderable
 {
 	public int x;
 	public int y;
@@ -22,7 +22,7 @@ public class Face
 	{
 		try
 		{
-			image = ImageIO.read(new File(spritePath));//从文件里读取图像
+			image = ImageIO.read(new File(spritePath));//浠庢枃浠堕噷璇诲叆
 		} catch (IOException e)
 		{
 			e.printStackTrace();
@@ -39,6 +39,12 @@ public class Face
 	public void draw(Graphics g)
 	{
 		g.drawImage(image, x, y, width, height, null);
+	}
+	
+	@Override
+	public void renderImage(int frame, int fps, Graphics g)
+	{
+		draw(g);
 	}
 	
 	public static Face getSansFace(int index)
@@ -67,5 +73,66 @@ public class Face
 		}
 		Face[] f = new Face[faces.size()];
 		return faces.toArray(f);
+	}
+
+	@Override
+	public void previewImage(Graphics g)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int frameLength()
+	{
+		return -1;
+	}
+
+	@Override
+	public void reset()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int lastFrame()
+	{
+		return 0;
+	}
+
+	@Override
+	public int getWidth()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getHeight()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void initRender(Graphics g)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void previewImage(int frame, Graphics g)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void refreshPreview()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

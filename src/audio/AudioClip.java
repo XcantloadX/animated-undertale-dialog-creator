@@ -3,7 +3,7 @@ package audio;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import utils.Bytes;
+import utils.BytesUtil;
 
 public class AudioClip
 {
@@ -25,13 +25,13 @@ public class AudioClip
 	
 	private void readFromBytes(byte[] buffer)
 	{
-		datas = Bytes.bytesToShort(buffer);
+		datas = BytesUtil.bytesToShort(buffer);
 	}
 
 	
 	public void updateRawDatas()
 	{
-		rawDatas = Bytes.shortToBytes(datas);
+		rawDatas = BytesUtil.shortToBytes(datas);
 	}
 	
 	public short[] getDatas()

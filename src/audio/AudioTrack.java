@@ -19,7 +19,7 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
 import javax.sound.sampled.SourceDataLine;
 
-import utils.Bytes;
+import utils.BytesUtil;
 
 public class AudioTrack
 {
@@ -118,7 +118,7 @@ public class AudioTrack
 			}
 		}
 		
-		return Bytes.shortToBytes(temp);
+		return BytesUtil.shortToBytes(temp);
 	}
 	
 	public void close()
