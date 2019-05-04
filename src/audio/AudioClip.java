@@ -1,76 +1,95 @@
 package audio;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
-import utils.BytesUtil;
-
-public class AudioClip
+public class AudioClip implements Cloneable
 {
-	private short[] datas;
-	private byte[] rawDatas;
-	private int sampleRate;
-	private int position = -1;
+	private int sampleRate = 0;
+	private int channels = 2;
+	private short[] samples;
+	private byte[] buffer;
+	private float positionInSec = 0f;
+	private int positionInSample = 0;
 	
-	/**
-	 * 从音频数据创建AudioClip
-	 * @param buffer 16位、双声道原始音频数据
-	 */
-	public AudioClip(byte[] buffer, int sampleRate)
+	public AudioClip(short[] buffer, int sampleRate)
 	{
-		rawDatas = buffer;
+		this.samples = buffer;
+		this.buffer = PCMCoder.encoderShort(this.samples);
 		this.sampleRate = sampleRate;
-		readFromBytes(buffer);
 	}
 	
-	private void readFromBytes(byte[] buffer)
+	public AudioClip(int sampleRate)
 	{
-		datas = BytesUtil.bytesToShort(buffer);
-	}
-
-	
-	public void updateRawDatas()
-	{
-		rawDatas = BytesUtil.shortToBytes(datas);
+		this(new short[1], sampleRate);
 	}
 	
-	public short[] getDatas()
+	public float getPosition()
 	{
-		return datas;
+		return positionInSec;
 	}
-
 	
-	public void setDatas(short[] datas)
+	public int getPositionInSample()
 	{
-		this.datas = datas;
+		return positionInSample;
 	}
-
-	public byte[] getRawDatas()
+	
+	public void setPosition(float pos)
 	{
-		return rawDatas;
+		positionInSec = pos;
+		positionInSample = secToSample(pos);
+	}
+	
+	public void setPositionInSample(int pos)
+	{
+		positionInSample = pos;
+	}
+	
+	public short[] getSamples()
+	{
+		return samples;
+	}
+	
+	public void setSamples(short[] samples)
+	{
+		this.samples = samples;
+	}
+	
+	public int getLengthInSample()
+	{
+		return samples.length;
+	}
+	
+	public int getLengthInByte()
+	{
+		return samples.length * 4;
+	}
+	
+	public float getLengthInSec()
+	{
+		return getLengthInSample() / 2 / sampleRate;
+	}
+	
+	private int secToSample(float sec)
+	{
+		//样本数 ＝ 秒 * 采样率 * 通道数量
+		return (int) (sec * sampleRate * channels);
 	}
 
 	public int getSampleRate()
 	{
 		return sampleRate;
 	}
+	
+	public void setSampleRate(int sampleRate)
+	{
+		this.sampleRate = sampleRate;
+	}
+	
+	@Override
+	public AudioClip clone() throws CloneNotSupportedException
+	{
+		AudioClip clip = new AudioClip(0);
+		clip.setSampleRate(sampleRate);
+		clip.setSamples(getSamples());
+		return clip;
+	}
 
-	public int getPosition()
-	{
-		return position;
-	}
-	
-	public float getPositionInSec()
-	{
-		return position / sampleRate / 2;
-	}
-
-	public void setPosition(float positionInSecond)
-	{
-		//样本数 ＝ 秒 * 采样率 * 通道数量
-		int pos = (int) (positionInSecond * sampleRate * 2);
-		this.position = pos;
-	}
-	
-	
 }

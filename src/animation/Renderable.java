@@ -2,6 +2,8 @@ package animation;
 
 import java.awt.Graphics;
 
+import audio.AudioTrack;
+
 public interface Renderable
 {
 	/**
@@ -53,5 +55,14 @@ public interface Renderable
 	
 	public int getHeight();
 
+	/**
+	 * 是否渲染音频
+	 */
+	public boolean isRenderAudio();
 	
+	/**
+	 * 渲染音频
+	 * @param track 渲染到此 AudioTrack 上
+	 */
+	public void renderAudio(AudioTrack track, int fps);
 }

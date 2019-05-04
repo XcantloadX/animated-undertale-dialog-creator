@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import audio.AudioTrack;
 import utils.Resource;
 
 public class Face implements Renderable
@@ -133,6 +134,20 @@ public class Face implements Renderable
 	public void refreshPreview()
 	{
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean isRenderAudio()
+	{
+		// TODO 自动生成的方法存根
+		return false;
+	}
+
+	@Override
+	public void renderAudio(AudioTrack track, int fps)
+	{
+		// TODO 自动生成的方法存根
 		
 	}
 }

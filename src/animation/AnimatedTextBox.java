@@ -5,6 +5,12 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import audio.AudioClip;
+import audio.AudioTrack;
+import audio.FFmpeg;
+import audio.PCMCoder;
+import utils.Resource;
+
 public class AnimatedTextBox implements Renderable
 {
 	private String text;
@@ -16,10 +22,22 @@ public class AnimatedTextBox implements Renderable
 	private int x;
 	private int y;
 	
+	private AudioTrack track;
+	private AudioClip clip;
+	private FFmpeg fFmpeg;
+	private int sampleRate = 48000;
+	private String audioPath;
 	
 	public AnimatedTextBox()
 	{
 		interval = 100;
+		
+		//加载音效
+		fFmpeg = new FFmpeg();
+		audioPath = Resource.getResFolder() + "\\voices\\asriel.wav";
+		byte[] buffer = fFmpeg.getAudioDataFromFile(audioPath, sampleRate);
+		short[] data = PCMCoder.decodeShort(buffer);
+		clip = new AudioClip(data, sampleRate);
 	}
 	
 	public AnimatedTextBox(String text, Font font)
@@ -139,24 +157,15 @@ public class AnimatedTextBox implements Renderable
 	@Override
 	public void renderImage(int frame, int fps, Graphics g)
 	{
-		int time = frame / fps;
-		int i = (int)time / interval;
-		int backup = currentCharacter;
-		
-		currentCharacter = i;
-		
 		//计算当前字符
 		int chars = (int)(frame / intervalFPS);
 		if(chars > length())
 			chars = length();
 		
 		String temp = text.substring(0, chars);
-		//System.out.println(temp);
 		g.setColor(Color.WHITE);
 		//g.setFont(font);
 		g.drawString(temp, x, y);
-		
-		currentCharacter = backup;
 	}
 
 	@Override
@@ -214,6 +223,19 @@ public class AnimatedTextBox implements Renderable
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean isRenderAudio()
+	{
+		return true;
+	}
+
+	@Override
+	public void renderAudio(AudioTrack track, int fps)
+	{
+		double time = (double)intervalFPS / fps;
+		track.addClipRepeat(clip, this.length(), (float)time);
 	}
 	
 }

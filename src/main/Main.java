@@ -5,19 +5,22 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.concurrent.TimeUnit;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;
 
-import audio.AudioClip;
-import audio.AudioPlayer;
-import audio.AudioTrack;
+import animation.AnimationCanvas;
+import audio.*;
 import ui.MainWindow;
 import utils.AnimatedGifEncoder;
-import utils.FFmpeg;
 import utils.ImageUtil;
 import utils.NamedPipe;
 import utils.Resource;
@@ -33,8 +36,12 @@ public class Main
 			m.setVisible(true);
 			
 			System.out.println(System.getProperty("user.dir"));
+			/*AnimationCanvas canvas = m.getCanvas();
+			AudioTrack track = new AudioTrack(48000);
+			canvas.renderAudio(track, AnimationCanvas.getFPS());
+			byte[] buffer = PCMCoder.encoderShort(track.getSamples());
+			new FFmpeg().exportToWav(buffer, 48000, 16, 2, "C:\\testing.wav");*/
 			//audioTest();
-			//audioTest2();
 			//gifTest();
 		} 
 		catch (Exception e)
@@ -43,74 +50,41 @@ public class Main
 		}
 	}
 	
-	private static void audioTest()
+	private static void audioTest() throws Exception
 	{
-		AudioTrack a = new AudioTrack(48000);
+		//String filePath = Resource.getResFolder() + "\\voices\\asriel.wav";
+		String filePath = "D:\\1.wav";
+		int sampleRate = 48000;
 		
-		try
-		{
-			
-			/*NamedPipe pipe = new NamedPipe("test");
-			pipe.waitForConnect();
-			System.out.println("连接成功！");
-			
-			FileInputStream fis = new FileInputStream("C:\\Users\\Admin\\Desktop\\battle_starand_16.wav");
-			FileOutputStream out = new FileOutputStream("E:\\a.wav");
-			byte[] buffer = new byte[fis.available()];
-			byte[] b = new byte[512];
-			//fis.read(buffer);
-			ByteArrayOutputStream input = new ByteArrayOutputStream();
-			
-			while(pipe.read(b,b.length))
-			{
-				input.write(b);
-			}
-			
-			pipe.close();
-			out.write(input.toByteArray());
-			input.close();
-			fis.close();
-			out.close();*/
-			
-			FFmpeg f = new FFmpeg();
-			//f.start(arg);
-			
-			//C:\\Users\\Administrator\\Desktop\\a\\battle_starand_16.wav
-			byte[] buffer = f.getAudioDataFromFile(Resource.getResFolder() + "\\voices\\asriel.wav", 48000);
-			AudioClip clip = new AudioClip(buffer,48000);
-			AudioClip clip2 = new AudioClip(buffer, 48000);
-			short[] data = clip.getDatas();
-			
-			clip.setDatas(data);
-			clip.updateRawDatas();
-			clip.setPosition(0);
-			clip2.setPosition((float)(clip.getPositionInSec() + 0.1));
-			
-			System.out.println(clip2.getPosition());
-			
-			a.addAudioClip(clip);
-			a.addAudioClip(clip2);
-			
-			buffer = a.toRawData();
-			
-			System.out.println("Get data length=" + buffer.length);
-			FileOutputStream out = new FileOutputStream("E:\\test.pcm");
-			out.write(buffer);
-			out.close();
-			
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-	
-	private static void audioTest2() throws Exception
-	{
-		FFmpeg ffmpeg = new FFmpeg();
-		String path = "C:\\Users\\Administrator\\Desktop\\Dr-Music\\field_of_hopes_16.wav";
-		//AudioPlayer player = new AudioPlayer("C:\\Users\\Administrator\\Desktop\\Dr-Music\\field_of_hopes_16.wav");
-		AudioPlayer player = new AudioPlayer(ffmpeg.getAudioDataFromFile(path, 48000),48000);
-		//player.close();
+		FFmpeg f = new FFmpeg();
+		byte[] buffer = f.getAudioDataFromFile(filePath, sampleRate);
+		
+		short[] samples = PCMCoder.decodeShort(buffer);
+		
+		
+		AudioTrack track = new AudioTrack(sampleRate);
+		AudioClip clip = new AudioClip(samples, sampleRate);
+		AudioClip clip2 = clip.clone();
+		track.addClip(clip);
+		track.addClipRepeat(clip, 3, 0);
+		
+		System.out.println("[Test]Clip length = " + clip.getLengthInSec());
+		System.out.println("[Test]Track length = " + track.getLengthInSec());
+		
+		byte[] b = PCMCoder.encoderShort(track.getSamples());
+		write(b, "C:\\test.pcm");
+		f.exportToWav(b, sampleRate, 16, 2, "C:\\test.wav");
+		
+		//测试播放
+		AudioFormat format = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sampleRate, 16, 2, 4, 48000, false);
+		Clip clip3 = AudioSystem.getClip();
+		clip3.open(format, b, 0, b.length);
+		clip3.start();
+		
+		waitForExit();
+		
+		clip3.stop();
+		clip3.close();
 	}
 	
 	private static void gifTest() throws Exception
@@ -127,5 +101,38 @@ public class Main
 		gif.finish();
 		
 		out.close();
+	}
+	
+	public static void write(byte[] buffer, String path) throws IOException
+	{
+		FileOutputStream stream = new FileOutputStream(path);
+		stream.write(buffer);
+		stream.close();
+	}
+	
+	public static byte[] read(String path) throws IOException
+	{
+		FileInputStream input = new FileInputStream(path);
+		byte[] buffer = new byte[input.available()];
+		input.read(buffer);
+		input.close();
+		return buffer;
+	}
+	
+	public static void waitForExit()
+	{
+		System.out.println("Enter q to exit.");
+		try
+		{
+			while(!(System.in.read() == (int)'q'))
+			{
+				
+			}
+		} 
+		catch (IOException e)
+		{
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
 	}
 }

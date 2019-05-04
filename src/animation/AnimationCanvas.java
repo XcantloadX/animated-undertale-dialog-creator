@@ -19,6 +19,10 @@ import javax.swing.JPanel;
 import com.sun.jna.platform.unix.X11.Screen;
 import com.sun.jna.platform.win32.Netapi32Util.User;
 
+import audio.AudioClip;
+import audio.AudioTrack;
+import audio.FFmpeg;
+import audio.PCMCoder;
 import exporter.ImageExporter;
 import utils.Resource;
 
@@ -32,10 +36,18 @@ public class AnimationCanvas extends JPanel implements Renderable
 	private static int fps = 15;
 	private Color backgroundColor = Color.BLACK;
 	public String texts ="* This is a test text.";
+	
 	private Graphics graphics;
 	private Image image;
 	private Face face;
 	private AnimatedTextBox textBox;
+	
+	public String audioPath;
+	private AudioTrack track;
+	private AudioClip clip;
+	private FFmpeg ffmpeg;
+	private int sampleRate = 48000;
+	
 	private boolean started = false;
 	private int frame = 0;
 	private Font sansFont;
@@ -68,6 +80,10 @@ public class AnimationCanvas extends JPanel implements Renderable
 		
 		//设置字体
 		textBox.refreshFont(graphics);
+		
+		//加载音效
+		ffmpeg = new FFmpeg();
+		track = new AudioTrack(sampleRate);
 	}
 	
 	@Override
@@ -274,6 +290,21 @@ public class AnimationCanvas extends JPanel implements Renderable
 		this.loop = loop;
 	}
 
+	public AudioTrack getAudioTrack()
+	{
+		return track;
+	}
 
+	@Override
+	public boolean isRenderAudio()
+	{
+		return true;
+	}
+
+	@Override
+	public void renderAudio(AudioTrack track, int fps)
+	{
+		textBox.renderAudio(track, fps);
+	}
 
 }

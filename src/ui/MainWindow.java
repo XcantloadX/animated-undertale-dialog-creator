@@ -78,6 +78,10 @@ public class MainWindow extends JFrame
 		settingPanel.setVisible(true);
 		this.add(settingPanel);
 		
+		ControlPanel control = new ControlPanel(canvas);
+		control.setVisible(true);
+		this.add(control);
+		
 		//-----------进度条-----------
 		JLabel position = new JLabel();
 		position.setVisible(true);
@@ -221,5 +225,13 @@ public class MainWindow extends JFrame
 		JButton custom = new JButton("Custom Dialog");
 		custom.setVisible(true);
 		settingPanel.add(custom);
+		
+		//------------------
+
+	}
+	
+	public AnimationCanvas getCanvas()
+	{
+		return canvas;
 	}
 }
