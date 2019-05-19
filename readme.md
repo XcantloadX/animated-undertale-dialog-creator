@@ -1,4 +1,4 @@
-# Animated Undertale Dialog Creator
+# Undertale Dialog Animator
 此项目还未完成  
 
 # 示例  
@@ -10,5 +10,7 @@
 # TODO
 - [x] 显示静态图片
 - [x] 显示动态图片
-- [ ] 支持播放声音
+- [ ] 优化文本细节
+- [ ] GUI
+- [ ] 播放声音
 - [ ] 导出为视频
