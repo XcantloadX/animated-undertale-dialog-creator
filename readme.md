@@ -1,11 +1,12 @@
 # Undertale Dialog Animator
-此项目还未完成  
+**不再更新**  
+之后可能会出个 H5 在线版本  
 
 # 示例  
 静图：
-![静态演示](https://raw.githubusercontent.com/XcantloadX/animated-undertale-dialog-creator/master/example.png)
+![静态演示](https://raw.githubusercontent.com/XcantloadX/animated-undertale-dialog-creator/master/example.png)  
 动图：
-![动态演示](https://raw.githubusercontent.com/XcantloadX/animated-undertale-dialog-creator/master/example_animation.gif)
+![动态演示](https://raw.githubusercontent.com/XcantloadX/animated-undertale-dialog-creator/master/example_animation.gif)  
 
 # TODO
 - [x] 显示静态图片
